@@ -1,0 +1,53 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 13rem;
+  font-size: 2rem;
+  border-bottom: 1px solid rgb(12 11 11 / 9%);
+}
+
+.header_title {
+  display: flex;
+  min-height: 8rem;
+  justify-content: center; /* Canh giữa title */
+  align-items: center;
+  position: relative; /* Thiết lập position để sử dụng absolute cho các phần tử con */
+
+  .title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Canh giữa title */
+  }
+}
+
+.icons {
+  margin-left: auto;
+  padding-right: 2rem;
+  display: flex;
+
+  .icon_user {
+    padding: 5px;
+    cursor: pointer;
+    margin-left: 15px;
+  }
+  .icon_search {
+    padding: 5px;
+    margin-left: 15px;
+
+    cursor: pointer;
+  }
+  .icon_cart {
+    padding: 5px;
+    margin-left: 15px;
+    cursor: pointer;
+  }
+}
+
+.infor {
+  display: flex;
+  justify-content: center;
+  div:not(:last-child) {
+    margin-right: 2rem;
+  } 
+}

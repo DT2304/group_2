@@ -1,0 +1,7 @@
+.products {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; // Center the items horizontally
+  gap: 20px; // Add space between items (adjust the value as needed)
+}

@@ -1,0 +1,12 @@
+.cart-popup {
+    position: fixed;
+    top: 60px; // Điều chỉnh theo chiều cao của header
+    right: 0;
+    width: 300px; // Điều chỉnh theo nhu cầu
+    height: 50vh;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+}

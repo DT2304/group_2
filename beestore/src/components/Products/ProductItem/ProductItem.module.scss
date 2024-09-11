@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  margin: 0.5rem;
+  width: 40rem;
+  height: 40rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &:hover .img_product {
+    transform: scale(105%);
+  }
+  &:hover .infor_product {
+    transform: scale(105%);
+  }
+}
+
+.img_product {
+  margin-bottom: 1rem;
+  width: 70%;
+  height: 70%;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.infor_product {
+  line-height: 1.6rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.804);
+  p {
+    margin-bottom: 0.5rem;
+  }
+}
