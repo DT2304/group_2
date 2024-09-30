@@ -4,38 +4,61 @@
 }
 
 .card {
+  margin-right: 200px;
+  font-size: 1.7rem;
+  // border: 1px solid black;
+  cursor: pointer;
   margin: 0.5rem;
-  width: 40rem;
-  height: 40rem;
+  width: 30rem;
+  height: 30rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  &:hover .img_product {
-    transform: scale(105%);
-  }
-  &:hover .infor_product {
-    transform: scale(105%);
-  }
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
 }
 
 .img_product {
-  margin-bottom: 1rem;
-  width: 70%;
+  margin: auto;
+  width: 90%;
   height: 70%;
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
+  // margin-bottom: 1rem;
+  overflow: hidden;
+  position: relative;
+  background-color: transparent;
+}
+
+.img_product img {
+  width: 95%;
+  height: 95%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
 .infor_product {
-  line-height: 1.6rem;
-  font-size: 1.4rem;
+  position: relative; /* Ensure it stays within the card */
+  z-index: 10;
+  line-height: 1.4rem;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.804);
-  p {
-    margin-bottom: 0.5rem;
-  }
+  text-align: center;
+}
+.title {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+p {
+  background-color: transparent;
+}
+.price {
+  margin-top: 2rem;
+}
+
+.card:hover .img_product img,
+.card:hover .infor_product {
+  transform: scale(1.05);
 }

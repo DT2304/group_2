@@ -1,0 +1,92 @@
+.item {
+  width: 100%;
+  height: 11rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid #53535370;
+  .img_product {
+    width: 100px;
+    height: 100px;
+    margin-left: 10px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  .cb_product {
+    height: 100%;
+    border-right: 1px solid black;
+    padding: 0 10px;
+  }
+}
+
+.checkbox {
+  margin-top: 45px;
+}
+
+.product-container {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  margin-top: 1rem;
+  font-size: 1.4rem;
+  width: 50%;
+}
+
+.product-info {
+  width: 70%;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  .product-title {
+    height: 50%;
+    width: 60%;
+    font-weight: 700;
+    word-break: break-all;
+  }
+  .product-price {
+    font-size: 1.4rem;
+  }
+}
+
+.product-details {
+  font-size: 1.2rem;
+  color: rgb(83 83 83 / 62%);
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.qty {
+  .qty_input {
+    margin-top: 1.5rem;
+    padding-left: 1.8rem;
+    height: 3.3rem;
+    width: 5rem;
+    font-weight: 700;
+    font-size: 1.7rem;
+    pointer-events: none;
+    border: 1px solid #53535370;
+  }
+  .btn_qty {
+    cursor: pointer;
+    border: 1px solid #53535370;
+    background-color: transparent;
+    margin-top: 1.2rem;
+    padding: 9px 7px 7px;
+  }
+}
+
+.delete {
+  width: 20%;
+  .btn-delete {
+    margin-top: 10px;
+    font-size: 1.7rem;
+    background-color: transparent;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+}

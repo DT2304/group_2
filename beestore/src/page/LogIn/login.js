@@ -4,13 +4,14 @@ import { postLogIn } from '~/services/LoginService'
 import styles from './login.module.scss'
 import classNames from 'classnames/bind'
 import { Link } from 'react-router-dom';
-import config from '~/components/config';
+import config from '~/config';
 const cx = classNames.bind(styles)
 
 function LogIn() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('')
+    const [isSuccess, setIsSuccess] = useState(null)
     const navigate = useNavigate()
 
 
@@ -19,14 +20,20 @@ function LogIn() {
         try {
             const data = await postLogIn(username, password)
             if (data.message) {
-                setMessage(data)
-                localStorage.setItem('user', JSON.stringify(data));
-                navigate('/')
+                
+                setMessage('Đăng nhập thành công')
+                setIsSuccess(true)
+                localStorage.setItem('user', JSON.stringify(data.user));
+                setTimeout(() => {
+                    navigate('/')  // Chuyển hướng sau 3 giây
+                }, 1000);
             } else {
-                setMessage('Login failed. Please check your credentials.')
+                setIsSuccess(false)
+                setMessage('Đăng nhập thất bại. Vui lòng kiểm tra lại tài khoản')
             }
         } catch {
-            setMessage('An error occurred while logging in.')
+            setIsSuccess(false)
+            setMessage('Đăng nhập thất bại. Vui lòng kiểm tra lại tài khoản')
         }
 
     }
@@ -39,6 +46,11 @@ function LogIn() {
             </div>
             <div className={cx('form')}>
                 <form onSubmit={handleLogin}>
+                    {message && (
+                        <div className={cx('message', isSuccess ? 'success' : 'error')}>
+                            <p>{message}</p>
+                        </div>
+                    )}
                     <input
                         type='text'
                         placeholder='Username'
@@ -61,8 +73,8 @@ function LogIn() {
                         className={cx('btn-login')}
                     >
                         ĐĂNG NHẬP
-                    </button> 
-                    {message && alert(message)}
+                    </button>
+
                     <p className={cx('forgot')}>Quên mật khẩu?</p>
                     <Link to={config.routes.register}><button className={cx('btn-register')}> ĐĂNG KÍ </button></Link>
                 </form>

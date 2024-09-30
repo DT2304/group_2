@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { PostRegister } from '~/services/RegisterService'
 import styles from './Register.module.scss'
 import classNames from 'classnames/bind'
-import config from '~/components/config'
+import config from '~/config'
 import '~/components/GlobalStyle/GlobalStyle.module.scss'
+import Notification from '~/components/Notification/Notification'
+
 const cx = classNames.bind(styles)
 
 function Register() {
@@ -13,7 +15,9 @@ function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [rePassword, setRePassword] = useState('')
-    const [message, setMessage] = useState('')
+    // const [message, setMessage] = useState('')
+    const [showNotification, setShowNotification] = useState(false); // Trạng thái hiển thị thông báo
+    const [message, setMessage] = useState({ title: '', body: '', typeMess: null }); // Nội dung thông báo
     const navigate = useNavigate()
 
     const handleRegister = async (e) => {
@@ -26,20 +30,39 @@ function Register() {
         }
 
         try {
-            const data = await PostRegister(username, email, password);
+            const data = await PostRegister(username, email, password);            
             if (data.message) {
-                alert('Đăng ký thành công');
+                setMessage({
+                    title: 'Thành công!',
+                    body: 'đăng ký thành công!',
+                    typeMess: true,
+                });
+                setShowNotification(true);
                 navigate('/login');
             } else {
-                setMessage('Registration failed.');
+                setMessage({
+                    title: 'Thất bại!',
+                    body: 'Đăng ký thất bại',
+                    typeMess: false,
+                });
+                setShowNotification(true);
             }
         } catch (error) {
-            setMessage(error.response?.data?.message || 'An error occurred during registration.');
+            setMessage({
+                title: 'Thất bại!',
+                body: error.response?.data?.message || 'An error occurred during registration.',
+                typeMess: false,
+            });
+            setShowNotification(true);
+
         }
     };
-
+    const handleCloseNotification = () => {
+        setShowNotification(false); // Đóng thông báo
+    };
     return (
         <div className={cx('wrapper')}>
+            <Notification show={showNotification} message={message} onClose={handleCloseNotification} />
             <div className={cx('register')}>
                 <h1>TẠO TÀI KHOẢN</h1>
             </div>
@@ -77,7 +100,6 @@ function Register() {
                         className={cx('submit')}
                         type='submit'
                     >ĐĂNG KÝ</button>
-                    {message && alert(message)}
                     <Link to={config.routes.login}><p >Đã có tài khoản</p></Link>
                 </form>
             </div>

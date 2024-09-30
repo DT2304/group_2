@@ -1,5 +1,14 @@
 [
     {
+        "label": "base64",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "base64",
+        "description": "base64",
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
         "label": "Flask",
         "importPath": "flask",
         "description": "flask",
@@ -152,6 +161,14 @@
         "documentation": {}
     },
     {
+        "label": "search_products",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
         "label": "mongo",
         "importPath": "models",
         "description": "models",
@@ -217,12 +234,53 @@
         "documentation": {}
     },
     {
-        "label": "os",
+        "label": "webdriver",
+        "importPath": "selenium",
+        "description": "selenium",
+        "isExtraImport": true,
+        "detail": "selenium",
+        "documentation": {}
+    },
+    {
+        "label": "Service",
+        "importPath": "selenium.webdriver.chrome.service",
+        "description": "selenium.webdriver.chrome.service",
+        "isExtraImport": true,
+        "detail": "selenium.webdriver.chrome.service",
+        "documentation": {}
+    },
+    {
+        "label": "ChromeDriverManager",
+        "importPath": "webdriver_manager.chrome",
+        "description": "webdriver_manager.chrome",
+        "isExtraImport": true,
+        "detail": "webdriver_manager.chrome",
+        "documentation": {}
+    },
+    {
+        "label": "Options",
+        "importPath": "selenium.webdriver.chrome.options",
+        "description": "selenium.webdriver.chrome.options",
+        "isExtraImport": true,
+        "detail": "selenium.webdriver.chrome.options",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "os",
-        "description": "os",
-        "detail": "os",
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
         "documentation": {}
     },
     {
@@ -267,12 +325,12 @@
         "documentation": {}
     },
     {
-        "label": "requests",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "requests",
-        "description": "requests",
-        "detail": "requests",
+        "label": "add_security_headers",
+        "kind": 2,
+        "importPath": "backend.app",
+        "description": "backend.app",
+        "peekOfCode": "def add_security_headers(response):\n    response.headers[\"Content-Security-Policy\"] = (\n        \"default-src 'self'; connect-src 'self' http://localhost:5000\"\n    )\n    return response\n@app.route(\"/register\", methods=[\"POST\"])\ndef register():\n    data = request.json\n    result = create_user(data[\"username\"], data[\"email\"], data[\"password\"])\n    return jsonify(result)",
+        "detail": "backend.app",
         "documentation": {}
     },
     {
@@ -280,7 +338,7 @@
         "kind": 2,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "def register():\n    data = request.json\n    result = create_user(data['username'], data['email'], data['password'])\n    return jsonify(result)\n@app.route('/login', methods=['POST'])\ndef login():\n    data = request.json\n    user = mongo.db.users.find_one({'username': data.get('username')})\n    if user and bcrypt.check_password_hash(user['password'], data['password']):\n        return jsonify({\"message\": \"Login successful\"}), 200",
+        "peekOfCode": "def register():\n    data = request.json\n    result = create_user(data[\"username\"], data[\"email\"], data[\"password\"])\n    return jsonify(result)\n@app.route(\"/login\", methods=[\"POST\"])\ndef login():\n    data = request.json\n    user = mongo.db.users.find_one({\"username\": data.get(\"username\")})\n    # Kiểm tra nếu người dùng tồn tại và mật khẩu khớp\n    if user and bcrypt.check_password_hash(user[\"password\"], data[\"password\"]):",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -289,7 +347,7 @@
         "kind": 2,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "def login():\n    data = request.json\n    user = mongo.db.users.find_one({'username': data.get('username')})\n    if user and bcrypt.check_password_hash(user['password'], data['password']):\n        return jsonify({\"message\": \"Login successful\"}), 200\n    return jsonify({\"error\": \"Invalid credentials\"}), 401\n@app.route('/products', methods=['POST'])\n@check_role('admin')\ndef add_product():\n    data = request.json",
+        "peekOfCode": "def login():\n    data = request.json\n    user = mongo.db.users.find_one({\"username\": data.get(\"username\")})\n    # Kiểm tra nếu người dùng tồn tại và mật khẩu khớp\n    if user and bcrypt.check_password_hash(user[\"password\"], data[\"password\"]):\n        # Tạo phản hồi trả về thông tin tài khoản, bao gồm username và role\n        user_info = {\n            \"username\": user[\"username\"],\n            \"role\": user.get(\"role\", \"user\")  # Lấy role, nếu không có thì trả về \"user\" mặc định\n        }",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -298,7 +356,7 @@
         "kind": 2,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "def add_product():\n    data = request.json\n    result = create_product(data['title'], data['price'], data.get('description', ''), data.get('image', ''), data.get('rating'))\n    return jsonify(result)\n@app.route('/products', methods=['GET'])\ndef get_products():\n    products = mongo.db.products.find()\n    result = []\n    for product in products:\n        result.append({",
+        "peekOfCode": "def add_product():\n    data = request.json\n    result = create_product(\n        data[\"title\"],\n        data[\"price\"],\n        data.get(\"description\", \"\"),\n        data.get(\"image\", \"\"),\n        data.get(\"rating\"),\n    )\n    return jsonify(result)",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -307,7 +365,7 @@
         "kind": 2,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "def get_products():\n    products = mongo.db.products.find()\n    result = []\n    for product in products:\n        result.append({\n            \"id\": str(product[\"_id\"]),\n            \"title\": product[\"title\"],\n            \"price\": product[\"price\"],\n            \"description\": product[\"description\"],\n            \"image\": product[\"image\"],",
+        "peekOfCode": "def get_products():\n    products = mongo.db.products.find()\n    result = []\n    for product in products:\n        product_dict = {\n            \"id\": str(product[\"_id\"]),\n            \"title\": product[\"title\"],\n            \"price\": product[\"price\"],\n            \"description\": product[\"description\"],\n            \"rating\": product[\"rating\"],",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -316,16 +374,7 @@
         "kind": 2,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "def get_product(product_id):\n    product = get_product_by_id(product_id)\n    if \"error\" in product:\n        return jsonify(product), 404\n    return jsonify(product)\n@app.route('/cart', methods=['POST'])\ndef add_to_cart_route():\n    data = request.json\n    result = update_or_add_cart_item(data['username'], data['product_id'], 1)  # Mặc định thêm 1 sản phẩm\n    return jsonify(result)",
-        "detail": "backend.app",
-        "documentation": {}
-    },
-    {
-        "label": "add_to_cart_route",
-        "kind": 2,
-        "importPath": "backend.app",
-        "description": "backend.app",
-        "peekOfCode": "def add_to_cart_route():\n    data = request.json\n    result = update_or_add_cart_item(data['username'], data['product_id'], 1)  # Mặc định thêm 1 sản phẩm\n    return jsonify(result)\n@app.route('/cart', methods=['PUT'])\ndef update_or_add_to_cart():\n    data = request.json\n    result = update_or_add_cart_item(data['username'], data['product_id'], data['quantity'])\n    return jsonify(result)\n@app.route('/cart', methods=['DELETE'])",
+        "peekOfCode": "def get_product(product_id):\n    product = get_product_by_id(product_id)\n    if \"error\" in product:\n        return jsonify(product), 404\n    image_data = product.get(\"image\")\n    if isinstance(image_data, bytes):\n        base64_image = base64.b64encode(image_data).decode(\"utf-8\")\n        product[\"image\"] = f\"data:image/jpeg;base64,{base64_image}\"\n    return jsonify(product)\n@app.route(\"/cart\", methods=[\"PUT\"])",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -334,7 +383,7 @@
         "kind": 2,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "def update_or_add_to_cart():\n    data = request.json\n    result = update_or_add_cart_item(data['username'], data['product_id'], data['quantity'])\n    return jsonify(result)\n@app.route('/cart', methods=['DELETE'])\ndef remove_from_cart_route():\n    data = request.json\n    result = remove_from_cart(data['username'], data['product_id'])\n    return jsonify(result)\n@app.route('/cart', methods=['GET'])",
+        "peekOfCode": "def update_or_add_to_cart():\n    data = request.json\n    print(data)\n    print(data[\"quantity\"])\n    result = update_or_add_cart_item(\n        data[\"username\"], data[\"product_id\"], data[\"quantity\"]\n    )\n    return jsonify(result)\n@app.route(\"/cart\", methods=[\"DELETE\"])\ndef remove_from_cart_route():",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -343,7 +392,7 @@
         "kind": 2,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "def remove_from_cart_route():\n    data = request.json\n    result = remove_from_cart(data['username'], data['product_id'])\n    return jsonify(result)\n@app.route('/cart', methods=['GET'])\ndef view_cart():\n    username = request.args.get('username')\n    result = get_cart(username)\n    return jsonify(result)\n@app.route('/checkout', methods=['POST'])",
+        "peekOfCode": "def remove_from_cart_route():\n    data = request.json\n    username = data.get(\"username\")\n    product_id = data.get(\"product_id\")\n    qty = data.get(\"qty\", None)  # Sử dụng `None` nếu `qty` không có trong dữ liệu yêu cầu\n    result = remove_from_cart(username, product_id, qty)\n    print(result)\n    return jsonify(result)\n@app.route(\"/cart\", methods=[\"GET\"])\ndef view_cart():",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -352,7 +401,7 @@
         "kind": 2,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "def view_cart():\n    username = request.args.get('username')\n    result = get_cart(username)\n    return jsonify(result)\n@app.route('/checkout', methods=['POST'])\ndef checkout():\n    data = request.json\n    result = clear_cart(data['username'])\n    return jsonify(result)\nif __name__ == '__main__':",
+        "peekOfCode": "def view_cart():\n    username = request.args.get(\"username\")\n    if not username:\n        return jsonify({\"error\": \"Yêu cầu username\"}), 400  # Xử lý yêu cầu không hợp lệ\n    result = get_cart(username)\n    if \"error\" in result:\n        return jsonify(result), 404  # Xử lý khi không tìm thấy giỏ hàng\n    return jsonify(result), 200\n@app.route(\"/checkout\", methods=[\"POST\"])\ndef checkout():",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -361,7 +410,16 @@
         "kind": 2,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "def checkout():\n    data = request.json\n    result = clear_cart(data['username'])\n    return jsonify(result)\nif __name__ == '__main__':\n    app.run(debug=True)",
+        "peekOfCode": "def checkout():\n    data = request.json\n    result = clear_cart(data[\"username\"])\n    return jsonify(result)\n@app.route(\"/search\", methods=[\"GET\"])\ndef search():\n    query = request.args.get(\"q\", \"\")\n    search_type = request.args.get(\"type\", \"long\")\n    if not query:\n        return jsonify({\"error\": \"Yêu cầu cung cấp từ khóa tìm kiếm\"}), 400",
+        "detail": "backend.app",
+        "documentation": {}
+    },
+    {
+        "label": "search",
+        "kind": 2,
+        "importPath": "backend.app",
+        "description": "backend.app",
+        "peekOfCode": "def search():\n    query = request.args.get(\"q\", \"\")\n    search_type = request.args.get(\"type\", \"long\")\n    if not query:\n        return jsonify({\"error\": \"Yêu cầu cung cấp từ khóa tìm kiếm\"}), 400\n    results = search_products(query, search_type)\n    return jsonify(results), 200\nif __name__ == \"__main__\":\n    app.run(debug=True)",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -370,7 +428,7 @@
         "kind": 5,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "app = Flask(__name__)\nCORS(app)  # This allows requests from any origin\napp.config.from_object(Config)\nmongo = PyMongo(app)\nbcrypt = Bcrypt(app)\n@app.route('/register', methods=['POST'])\ndef register():\n    data = request.json\n    result = create_user(data['username'], data['email'], data['password'])\n    return jsonify(result)",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)\napp.config.from_object(Config)\nmongo = PyMongo(app)\nbcrypt = Bcrypt(app)\n@app.after_request\ndef add_security_headers(response):\n    response.headers[\"Content-Security-Policy\"] = (\n        \"default-src 'self'; connect-src 'self' http://localhost:5000\"\n    )",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -379,7 +437,7 @@
         "kind": 5,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "mongo = PyMongo(app)\nbcrypt = Bcrypt(app)\n@app.route('/register', methods=['POST'])\ndef register():\n    data = request.json\n    result = create_user(data['username'], data['email'], data['password'])\n    return jsonify(result)\n@app.route('/login', methods=['POST'])\ndef login():\n    data = request.json",
+        "peekOfCode": "mongo = PyMongo(app)\nbcrypt = Bcrypt(app)\n@app.after_request\ndef add_security_headers(response):\n    response.headers[\"Content-Security-Policy\"] = (\n        \"default-src 'self'; connect-src 'self' http://localhost:5000\"\n    )\n    return response\n@app.route(\"/register\", methods=[\"POST\"])\ndef register():",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -388,7 +446,7 @@
         "kind": 5,
         "importPath": "backend.app",
         "description": "backend.app",
-        "peekOfCode": "bcrypt = Bcrypt(app)\n@app.route('/register', methods=['POST'])\ndef register():\n    data = request.json\n    result = create_user(data['username'], data['email'], data['password'])\n    return jsonify(result)\n@app.route('/login', methods=['POST'])\ndef login():\n    data = request.json\n    user = mongo.db.users.find_one({'username': data.get('username')})",
+        "peekOfCode": "bcrypt = Bcrypt(app)\n@app.after_request\ndef add_security_headers(response):\n    response.headers[\"Content-Security-Policy\"] = (\n        \"default-src 'self'; connect-src 'self' http://localhost:5000\"\n    )\n    return response\n@app.route(\"/register\", methods=[\"POST\"])\ndef register():\n    data = request.json",
         "detail": "backend.app",
         "documentation": {}
     },
@@ -406,7 +464,7 @@
         "kind": 2,
         "importPath": "backend.models",
         "description": "backend.models",
-        "peekOfCode": "def create_user(username, email, password, role='user'):\n    if mongo.db.users.find_one({'username': username}):\n        return {\"error\": \"Username already exists\"}\n    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')\n    mongo.db.users.insert_one({\n        'username': username,\n        'email': email,\n        'password': hashed_password,\n        'role': role\n    })",
+        "peekOfCode": "def create_user(username, email, password, role=\"user\"):\n    # Kiểm tra xem username đã tồn tại chưa\n    if mongo.db.users.find_one({\"username\": username}):\n        return {\"error\": \"Tên người dùng đã tồn tại\"}\n    # Kiểm tra xem email đã tồn tại chưa\n    if mongo.db.users.find_one({\"email\": email}):\n        return {\"error\": \"Email đã được sử dụng\"}\n    # Nếu cả username và email đều chưa tồn tại, tiến hành tạo user mới\n    hashed_password = bcrypt.generate_password_hash(password).decode(\"utf-8\")\n    mongo.db.users.insert_one(",
         "detail": "backend.models",
         "documentation": {}
     },
@@ -415,7 +473,7 @@
         "kind": 2,
         "importPath": "backend.models",
         "description": "backend.models",
-        "peekOfCode": "def create_product(title, price, description='', image='', rating=None):\n    if rating is None:\n        rating = {\"rate\": 0, \"count\": 0}\n    mongo.db.products.insert_one({\n        \"title\": title,\n        \"price\": price,\n        \"description\": description,\n        \"image\": image,\n        \"rating\": rating\n    })",
+        "peekOfCode": "def create_product(title, price, description=\"\", image=\"\", rating=None):\n    if rating is None:\n        rating = {\"rate\": 0, \"count\": 0}\n    new_product = mongo.db.products.insert_one(\n        {\n            \"title\": title,\n            \"price\": price,\n            \"description\": description,\n            \"image\": image,\n            \"rating\": rating,",
         "detail": "backend.models",
         "documentation": {}
     },
@@ -424,7 +482,7 @@
         "kind": 2,
         "importPath": "backend.models",
         "description": "backend.models",
-        "peekOfCode": "def get_product_by_id(product_id):\n    product = mongo.db.products.find_one({'_id': ObjectId(product_id)})  # Sửa dòng này\n    if product:\n        return {\n            \"id\": str(product[\"_id\"]),\n            \"title\": product[\"title\"],\n            \"price\": product[\"price\"],\n            \"description\": product[\"description\"],\n            \"image\": product[\"image\"],\n            \"rating\": product[\"rating\"]",
+        "peekOfCode": "def get_product_by_id(product_id):\n    product = mongo.db.products.find_one({\"_id\": ObjectId(product_id)})\n    if product:\n        return {\n            \"id\": str(product[\"_id\"]),\n            \"title\": product[\"title\"],\n            \"price\": product[\"price\"],\n            \"description\": product[\"description\"],\n            \"image\": product[\"image\"],\n            \"rating\": product[\"rating\"],",
         "detail": "backend.models",
         "documentation": {}
     },
@@ -433,7 +491,7 @@
         "kind": 2,
         "importPath": "backend.models",
         "description": "backend.models",
-        "peekOfCode": "def delete_product_by_id(product_id):\n    result = mongo.db.products.delete_one({\"_id\": ObjectId(product_id)})  # Sửa dòng này\n    if result.deleted_count > 0:\n        return {\"message\": \"Product deleted successfully\"}\n    return {\"error\": \"Product not found\"}\ndef update_or_add_cart_item(username, product_id, quantity):\n    user = mongo.db.users.find_one({'username': username})\n    if not user:\n        return {\"error\": \"User not found\"}\n    cart = mongo.db.carts.find_one({'username': username})",
+        "peekOfCode": "def delete_product_by_id(product_id):\n    result = mongo.db.products.delete_one({\"_id\": ObjectId(product_id)})\n    if result.deleted_count > 0:\n        return {\"message\": \"Sản phẩm đã được xóa thành công\"}\n    return {\"error\": \"Không tìm thấy sản phẩm\"}\ndef update_or_add_cart_item(username, product_id, quantity):\n    try:\n        cart = mongo.db.carts.find_one({\"username\": username})\n        if not cart:\n            cart = {\"username\": username, \"products\": []}",
         "detail": "backend.models",
         "documentation": {}
     },
@@ -442,7 +500,7 @@
         "kind": 2,
         "importPath": "backend.models",
         "description": "backend.models",
-        "peekOfCode": "def update_or_add_cart_item(username, product_id, quantity):\n    user = mongo.db.users.find_one({'username': username})\n    if not user:\n        return {\"error\": \"User not found\"}\n    cart = mongo.db.carts.find_one({'username': username})\n    if not cart:\n        # Nếu giỏ hàng chưa tồn tại, tạo mới\n        cart = {'username': username, 'products': []}\n    # Tìm sản phẩm trong giỏ hàng\n    product = next((item for item in cart.get('products', []) if item['id'] == product_id), None)",
+        "peekOfCode": "def update_or_add_cart_item(username, product_id, quantity):\n    try:\n        cart = mongo.db.carts.find_one({\"username\": username})\n        if not cart:\n            cart = {\"username\": username, \"products\": []}\n        product = next(\n            (item for item in cart.get(\"products\", []) if item[\"id\"] == product_id),\n            None,\n        )\n        print(product)",
         "detail": "backend.models",
         "documentation": {}
     },
@@ -451,7 +509,7 @@
         "kind": 2,
         "importPath": "backend.models",
         "description": "backend.models",
-        "peekOfCode": "def remove_from_cart(username, product_id):\n    user = mongo.db.users.find_one({'username': username})\n    if not user:\n        return {\"error\": \"User not found\"}\n    mongo.db.carts.update_one(\n        {'username': username},\n        {'$pull': {'products': product_id}}\n    )\n    return {\"message\": \"Product removed from cart\"}\ndef get_cart(username):",
+        "peekOfCode": "def remove_from_cart(username, product_id, quantity):\n    try:\n        cart = mongo.db.carts.find_one({\"username\": username})\n        if not cart:\n            return {\"error\": \"Giỏ hàng không tồn tại\"}, 404\n        # Tìm sản phẩm trong giỏ hàng\n        product = next(\n            (item for item in cart.get(\"products\", []) if item[\"id\"] == product_id),\n            None,\n        )",
         "detail": "backend.models",
         "documentation": {}
     },
@@ -460,7 +518,7 @@
         "kind": 2,
         "importPath": "backend.models",
         "description": "backend.models",
-        "peekOfCode": "def get_cart(username):\n    user = mongo.db.users.find_one({'username': username})\n    if not user:\n        return {\"error\": \"User not found\"}\n    cart = mongo.db.carts.find_one({'username': username})\n    if not cart:\n        return {\"products\": []}\n    products = []\n    for cart_item in cart.get('products', []):\n        product = mongo.db.products.find_one({'_id': ObjectId(cart_item['id'])})",
+        "peekOfCode": "def get_cart(username):\n    user = mongo.db.users.find_one({\"username\": username})\n    if not user:\n        return {\"error\": \"User not found\"}, 404  # Xử lý khi không tìm thấy người dùng\n    cart = mongo.db.carts.find_one({\"username\": username})\n    if not cart:\n        return {\"products\": []}  # Trả về giỏ hàng trống nếu không tìm thấy giỏ hàng\n    # Ghi thêm nhật ký\n    print(f\"Fetched cart for user: {username}\")\n    return {\"products\": cart.get(\"products\", [])}",
         "detail": "backend.models",
         "documentation": {}
     },
@@ -469,7 +527,16 @@
         "kind": 2,
         "importPath": "backend.models",
         "description": "backend.models",
-        "peekOfCode": "def clear_cart(username):\n    user = mongo.db.users.find_one({'username': username})\n    if not user:\n        return {\"error\": \"User not found\"}\n    result = mongo.db.carts.delete_one({'username': username})\n    if result.deleted_count > 0:\n        return {\"message\": \"Cart cleared\"}\n    else:\n        return {\"message\": \"Cart was already empty\"}",
+        "peekOfCode": "def clear_cart(username):\n    result = mongo.db.carts.delete_one({\"username\": username})\n    if result.deleted_count > 0:\n        return {\"message\": \"Giỏ hàng đã được xóa\"}\n    else:\n        return {\"message\": \"Giỏ hàng đã trống\"}\ndef search_products(query, search_type=\"long\"):\n    # Thực hiện tìm kiếm không phân biệt chữ hoa/thường trên title và description\n    mongo_query = {\n        \"$or\": [",
+        "detail": "backend.models",
+        "documentation": {}
+    },
+    {
+        "label": "search_products",
+        "kind": 2,
+        "importPath": "backend.models",
+        "description": "backend.models",
+        "peekOfCode": "def search_products(query, search_type=\"long\"):\n    # Thực hiện tìm kiếm không phân biệt chữ hoa/thường trên title và description\n    mongo_query = {\n        \"$or\": [\n            {\"title\": {\"$regex\": query, \"$options\": \"i\"}},\n            {\"description\": {\"$regex\": query, \"$options\": \"i\"}},\n        ]\n    }\n    # Nếu search_type là \"less\", giới hạn kết quả là 5\n    limit = 5 if search_type == \"less\" else 0",
         "detail": "backend.models",
         "documentation": {}
     },
@@ -478,7 +545,7 @@
         "kind": 5,
         "importPath": "backend.models",
         "description": "backend.models",
-        "peekOfCode": "app = Flask(__name__)\napp.config.from_object('config.Config')\nmongo = PyMongo(app)\nbcrypt = Bcrypt(app)\ndef create_user(username, email, password, role='user'):\n    if mongo.db.users.find_one({'username': username}):\n        return {\"error\": \"Username already exists\"}\n    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')\n    mongo.db.users.insert_one({\n        'username': username,",
+        "peekOfCode": "app = Flask(__name__)\napp.config.from_object(\"config.Config\")\nmongo = PyMongo(app)\nbcrypt = Bcrypt(app)\ndef create_user(username, email, password, role=\"user\"):\n    # Kiểm tra xem username đã tồn tại chưa\n    if mongo.db.users.find_one({\"username\": username}):\n        return {\"error\": \"Tên người dùng đã tồn tại\"}\n    # Kiểm tra xem email đã tồn tại chưa\n    if mongo.db.users.find_one({\"email\": email}):",
         "detail": "backend.models",
         "documentation": {}
     },
@@ -487,7 +554,7 @@
         "kind": 5,
         "importPath": "backend.models",
         "description": "backend.models",
-        "peekOfCode": "mongo = PyMongo(app)\nbcrypt = Bcrypt(app)\ndef create_user(username, email, password, role='user'):\n    if mongo.db.users.find_one({'username': username}):\n        return {\"error\": \"Username already exists\"}\n    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')\n    mongo.db.users.insert_one({\n        'username': username,\n        'email': email,\n        'password': hashed_password,",
+        "peekOfCode": "mongo = PyMongo(app)\nbcrypt = Bcrypt(app)\ndef create_user(username, email, password, role=\"user\"):\n    # Kiểm tra xem username đã tồn tại chưa\n    if mongo.db.users.find_one({\"username\": username}):\n        return {\"error\": \"Tên người dùng đã tồn tại\"}\n    # Kiểm tra xem email đã tồn tại chưa\n    if mongo.db.users.find_one({\"email\": email}):\n        return {\"error\": \"Email đã được sử dụng\"}\n    # Nếu cả username và email đều chưa tồn tại, tiến hành tạo user mới",
         "detail": "backend.models",
         "documentation": {}
     },
@@ -496,7 +563,7 @@
         "kind": 5,
         "importPath": "backend.models",
         "description": "backend.models",
-        "peekOfCode": "bcrypt = Bcrypt(app)\ndef create_user(username, email, password, role='user'):\n    if mongo.db.users.find_one({'username': username}):\n        return {\"error\": \"Username already exists\"}\n    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')\n    mongo.db.users.insert_one({\n        'username': username,\n        'email': email,\n        'password': hashed_password,\n        'role': role",
+        "peekOfCode": "bcrypt = Bcrypt(app)\ndef create_user(username, email, password, role=\"user\"):\n    # Kiểm tra xem username đã tồn tại chưa\n    if mongo.db.users.find_one({\"username\": username}):\n        return {\"error\": \"Tên người dùng đã tồn tại\"}\n    # Kiểm tra xem email đã tồn tại chưa\n    if mongo.db.users.find_one({\"email\": email}):\n        return {\"error\": \"Email đã được sử dụng\"}\n    # Nếu cả username và email đều chưa tồn tại, tiến hành tạo user mới\n    hashed_password = bcrypt.generate_password_hash(password).decode(\"utf-8\")",
         "detail": "backend.models",
         "documentation": {}
     },
@@ -681,92 +748,245 @@
         "documentation": {}
     },
     {
-        "label": "print_directory_tree",
-        "kind": 2,
-        "importPath": "beestore.printFolder",
-        "description": "beestore.printFolder",
-        "peekOfCode": "def print_directory_tree(startpath, level=0):\n    prefix = \" \" * (level * 4)\n    for item in os.listdir(startpath):\n        path = os.path.join(startpath, item)\n        print(f\"{prefix}|__ {item}\")\n        if os.path.isdir(path):\n            print_directory_tree(path, level + 1)\n# Gọi hàm với đường dẫn thư mục cần vẽ\nprint_directory_tree(r'C:\\Users\\hoang\\OneDrive\\Máy tính\\CS 434\\beestore\\src')",
-        "detail": "beestore.printFolder",
+        "label": "chrome_options",
+        "kind": 5,
+        "importPath": "createFolder",
+        "description": "createFolder",
+        "peekOfCode": "chrome_options = Options()\n# chrome_options.add_argument('--headless')  # Chạy ở chế độ headless (không hiển thị trình duyệt)\nchrome_options.add_argument('--user-agent=Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Mobile Safari/537.36')\n# Sử dụng webdriver-manager để tự động cài đặt ChromeDriver\ndriver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)\n# Truy cập trang web\ndriver.get(\"https://app.golike.net\")\ninput('enter')\n# Lấy mã HTML của trang\n# /html/body/div[1]/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div/span (text => tên acc)",
+        "detail": "createFolder",
+        "documentation": {}
+    },
+    {
+        "label": "driver",
+        "kind": 5,
+        "importPath": "createFolder",
+        "description": "createFolder",
+        "peekOfCode": "driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)\n# Truy cập trang web\ndriver.get(\"https://app.golike.net\")\ninput('enter')\n# Lấy mã HTML của trang\n# /html/body/div[1]/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div/span (text => tên acc)\n# Đóng trình duyệt sau khi hoàn thành\ndriver.quit()",
+        "detail": "createFolder",
+        "documentation": {}
+    },
+    {
+        "label": "user",
+        "kind": 5,
+        "importPath": "followTwitter",
+        "description": "followTwitter",
+        "peekOfCode": "user = 'trump_fight_bot'\ncookies = {\n    'guest_id': '171604368715756453',\n    'night_mode': '2',\n    'guest_id_marketing': 'v1%3A171604368715756453',\n    'guest_id_ads': 'v1%3A171604368715756453',\n    '_ga': 'GA1.2.1059021348.1716043700',\n    'g_state': '{\"i_l\":0}',\n    'kdt': 'at16C4h7LdwkEQ66yVJZkbRpkSyVTecEk8GLHRVZ',\n    'auth_token': 'a84bcf5ac7e2386f6f1f9bc830fb817d38858ded',",
+        "detail": "followTwitter",
+        "documentation": {}
+    },
+    {
+        "label": "cookies",
+        "kind": 5,
+        "importPath": "followTwitter",
+        "description": "followTwitter",
+        "peekOfCode": "cookies = {\n    'guest_id': '171604368715756453',\n    'night_mode': '2',\n    'guest_id_marketing': 'v1%3A171604368715756453',\n    'guest_id_ads': 'v1%3A171604368715756453',\n    '_ga': 'GA1.2.1059021348.1716043700',\n    'g_state': '{\"i_l\":0}',\n    'kdt': 'at16C4h7LdwkEQ66yVJZkbRpkSyVTecEk8GLHRVZ',\n    'auth_token': 'a84bcf5ac7e2386f6f1f9bc830fb817d38858ded',\n    'ct0': 'bc21315b56f43f409e44806b6ab46e995edb3c47918ca6b88651525745bfab97762556ddcf34c6ed2bab50c07fd7c06b797c7295e8fd7885c107fd9406f9ab00afbaad4c366cc873b22bd26cbb8938d1',",
+        "detail": "followTwitter",
+        "documentation": {}
+    },
+    {
+        "label": "headers",
+        "kind": 5,
+        "importPath": "followTwitter",
+        "description": "followTwitter",
+        "peekOfCode": "headers = {\n    'accept': '*/*',\n    'accept-language': 'en-US,en;q=0.9,vi;q=0.8',\n    'authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA',\n    'content-type': 'application/json',\n    'priority': 'u=1, i',\n    'referer': f'https://x.com/{user}',\n    'sec-ch-ua': '\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\"',\n    'sec-ch-ua-mobile': '?0',\n    'sec-ch-ua-platform': '\"Windows\"',",
+        "detail": "followTwitter",
+        "documentation": {}
+    },
+    {
+        "label": "params",
+        "kind": 5,
+        "importPath": "followTwitter",
+        "description": "followTwitter",
+        "peekOfCode": "params = {\n    'variables': '{\"screen_name\":\"' + user + '\"}',\n}\nresponse = requests.get(\n    'https://x.com/i/api/graphql/-0XdHI-mrHWBQd8-oLo1aA/ProfileSpotlightsQuery',\n    params=params,\n    cookies=cookies,\n    headers=headers,\n)\nprint(response.json())",
+        "detail": "followTwitter",
+        "documentation": {}
+    },
+    {
+        "label": "response",
+        "kind": 5,
+        "importPath": "followTwitter",
+        "description": "followTwitter",
+        "peekOfCode": "response = requests.get(\n    'https://x.com/i/api/graphql/-0XdHI-mrHWBQd8-oLo1aA/ProfileSpotlightsQuery',\n    params=params,\n    cookies=cookies,\n    headers=headers,\n)\nprint(response.json())\nrest_id = response.json()['data']['user_result_by_screen_name']['result']['rest_id']\n# Lấy rest_id\ntime.sleep(2)",
+        "detail": "followTwitter",
+        "documentation": {}
+    },
+    {
+        "label": "rest_id",
+        "kind": 5,
+        "importPath": "followTwitter",
+        "description": "followTwitter",
+        "peekOfCode": "rest_id = response.json()['data']['user_result_by_screen_name']['result']['rest_id']\n# Lấy rest_id\ntime.sleep(2)\nheaders = {\n    \"sec-ch-ua\": '\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\"',\n    \"x-twitter-client-language\": \"en\",\n    \"x-csrf-token\": \"bc21315b56f43f409e44806b6ab46e995edb3c47918ca6b88651525745bfab97762556ddcf34c6ed2bab50c07fd7c06b797c7295e8fd7885c107fd9406f9ab00afbaad4c366cc873b22bd26cbb8938d1\",\n    \"sec-ch-ua-mobile\": \"?0\",\n    \"authorization\": \"Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA\",\n    \"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0\",",
+        "detail": "followTwitter",
+        "documentation": {}
+    },
+    {
+        "label": "headers",
+        "kind": 5,
+        "importPath": "followTwitter",
+        "description": "followTwitter",
+        "peekOfCode": "headers = {\n    \"sec-ch-ua\": '\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Microsoft Edge\";v=\"128\"',\n    \"x-twitter-client-language\": \"en\",\n    \"x-csrf-token\": \"bc21315b56f43f409e44806b6ab46e995edb3c47918ca6b88651525745bfab97762556ddcf34c6ed2bab50c07fd7c06b797c7295e8fd7885c107fd9406f9ab00afbaad4c366cc873b22bd26cbb8938d1\",\n    \"sec-ch-ua-mobile\": \"?0\",\n    \"authorization\": \"Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA\",\n    \"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0\",\n    \"content-type\": \"application/x-www-form-urlencoded\",\n    \"Referer\": f\"https://x.com/intent/follow?screen_name={user}\",\n    \"x-client-transaction-id\": \"cdqFEBDTphfaXiP+qhJ2T0fztxKcw2l+fkKpeUwWdUbhMqHlJZl1segTgxAsoGJ1jLuD7XO/t9TUbnvThvViqcTWY9YVcg\",",
+        "detail": "followTwitter",
+        "documentation": {}
+    },
+    {
+        "label": "data",
+        "kind": 5,
+        "importPath": "followTwitter",
+        "description": "followTwitter",
+        "peekOfCode": "data = {\n    \"include_profile_interstitial_type\": \"1\",\n    \"include_blocking\": \"1\",\n    \"include_blocked_by\": \"1\",\n    \"include_followed_by\": \"1\",\n    \"include_want_retweets\": \"1\",\n    \"include_mute_edge\": \"1\",\n    \"include_can_dm\": \"1\",\n    \"include_can_media_tag\": \"1\",\n    \"include_ext_is_blue_verified\": \"1\",",
+        "detail": "followTwitter",
+        "documentation": {}
+    },
+    {
+        "label": "response",
+        "kind": 5,
+        "importPath": "followTwitter",
+        "description": "followTwitter",
+        "peekOfCode": "response = requests.post(\n    \"https://x.com/i/api/1.1/friendships/create.json\",\n    headers=headers,\n    data=data,\n    cookies=cookies,\n)\nprint(response.json())\n# headers = {\n#     'accept': '*/*',\n#     'accept-language': 'en-US,en;q=0.9,vi;q=0.8',",
+        "detail": "followTwitter",
+        "documentation": {}
+    },
+    {
+        "label": "session",
+        "kind": 5,
+        "importPath": "passCloudfe",
+        "description": "passCloudfe",
+        "peekOfCode": "session = requests.Session()\n# Yêu cầu Cloudflare để lấy token\nurl_cf = \"https://autocaptcha.pro/apiv3/process\"\npayload_cf = {\n    \"key\": \"644076e7029aee3601f9781dbefc2318\",\n    \"type\": \"cloudflare\",\n    \"websitekey\": \"0x4AAAAAAADnPIDROrmt1Wwj\",\n    \"pageurl\": \"https://app.golike.net/\"\n}\nheaders_cf = {\"Content-Type\": \"application/json\"}",
+        "detail": "passCloudfe",
+        "documentation": {}
+    },
+    {
+        "label": "url_cf",
+        "kind": 5,
+        "importPath": "passCloudfe",
+        "description": "passCloudfe",
+        "peekOfCode": "url_cf = \"https://autocaptcha.pro/apiv3/process\"\npayload_cf = {\n    \"key\": \"644076e7029aee3601f9781dbefc2318\",\n    \"type\": \"cloudflare\",\n    \"websitekey\": \"0x4AAAAAAADnPIDROrmt1Wwj\",\n    \"pageurl\": \"https://app.golike.net/\"\n}\nheaders_cf = {\"Content-Type\": \"application/json\"}\nprint('Giải Cloudflare CAPTCHA...')\n# Gửi yêu cầu POST đến Cloudflare",
+        "detail": "passCloudfe",
+        "documentation": {}
+    },
+    {
+        "label": "payload_cf",
+        "kind": 5,
+        "importPath": "passCloudfe",
+        "description": "passCloudfe",
+        "peekOfCode": "payload_cf = {\n    \"key\": \"644076e7029aee3601f9781dbefc2318\",\n    \"type\": \"cloudflare\",\n    \"websitekey\": \"0x4AAAAAAADnPIDROrmt1Wwj\",\n    \"pageurl\": \"https://app.golike.net/\"\n}\nheaders_cf = {\"Content-Type\": \"application/json\"}\nprint('Giải Cloudflare CAPTCHA...')\n# Gửi yêu cầu POST đến Cloudflare\nresponse_cf = session.post(url_cf, headers=headers_cf, json=payload_cf)",
+        "detail": "passCloudfe",
+        "documentation": {}
+    },
+    {
+        "label": "headers_cf",
+        "kind": 5,
+        "importPath": "passCloudfe",
+        "description": "passCloudfe",
+        "peekOfCode": "headers_cf = {\"Content-Type\": \"application/json\"}\nprint('Giải Cloudflare CAPTCHA...')\n# Gửi yêu cầu POST đến Cloudflare\nresponse_cf = session.post(url_cf, headers=headers_cf, json=payload_cf)\nif response_cf.status_code == 200:\n    cloudflare_token = response_cf.json().get('captcha').get('token')  # Lấy token từ response\n    print(\"Token Cloudflare:\", cloudflare_token)\n    # Tiếp tục giải reCAPTCHA v2\n    url_recaptcha = \"https://autocaptcha.pro/apiv3/process\"\n    payload_recaptcha = {",
+        "detail": "passCloudfe",
+        "documentation": {}
+    },
+    {
+        "label": "response_cf",
+        "kind": 5,
+        "importPath": "passCloudfe",
+        "description": "passCloudfe",
+        "peekOfCode": "response_cf = session.post(url_cf, headers=headers_cf, json=payload_cf)\nif response_cf.status_code == 200:\n    cloudflare_token = response_cf.json().get('captcha').get('token')  # Lấy token từ response\n    print(\"Token Cloudflare:\", cloudflare_token)\n    # Tiếp tục giải reCAPTCHA v2\n    url_recaptcha = \"https://autocaptcha.pro/apiv3/process\"\n    payload_recaptcha = {\n        \"key\": \"644076e7029aee3601f9781dbefc2318\",\n        \"type\": \"recaptchav2\",\n        \"googlesitekey\": \"6LfiTfQUAAAAANM8yUWHdhLQ1pwdkaGlaCHUW609\",  # Thay bằng sitekey reCAPTCHA v2 của trang",
+        "detail": "passCloudfe",
+        "documentation": {}
+    },
+    {
+        "label": "colors",
+        "kind": 5,
+        "importPath": "printFolder",
+        "description": "printFolder",
+        "peekOfCode": "colors = [\"Black\", \"White\", \"Blue\", \"Red\", \"Yellow\", \"Green\", \"Gray\"]\nsizes = ['S', 'M', 'L', 'XL']\n# with open('ecommerce.products.json', 'r', encoding='utf-8') as file:\n#     data = json.load(file)\nimport json\nwith open('ecommerce.products.json', 'r', encoding='utf-8') as file:\n    data = json.load(file)\n# Kiểm tra nếu 'size' không tồn tại hoặc là list, tạo mới là dictionary\nfor item in data:\n    if 'size' not in item or not isinstance(item['size'], dict):",
+        "detail": "printFolder",
+        "documentation": {}
+    },
+    {
+        "label": "sizes",
+        "kind": 5,
+        "importPath": "printFolder",
+        "description": "printFolder",
+        "peekOfCode": "sizes = ['S', 'M', 'L', 'XL']\n# with open('ecommerce.products.json', 'r', encoding='utf-8') as file:\n#     data = json.load(file)\nimport json\nwith open('ecommerce.products.json', 'r', encoding='utf-8') as file:\n    data = json.load(file)\n# Kiểm tra nếu 'size' không tồn tại hoặc là list, tạo mới là dictionary\nfor item in data:\n    if 'size' not in item or not isinstance(item['size'], dict):\n        item['color'] = {}  # Khởi tạo nếu chưa có",
+        "detail": "printFolder",
         "documentation": {}
     },
     {
         "label": "api_id",
         "kind": 5,
-        "importPath": "beestore.test copy",
-        "description": "beestore.test copy",
-        "peekOfCode": "api_id = '21931615'  # Thay thế bằng API ID của bạn\napi_hash = '6cd1f6260d0050adf4af5f1d99dbde09'  # Thay thế bằng API Hash của bạn\n# Tạo Telegram client\nclient = TelegramClient('+84905227657', api_id, api_hash)\n# Hàm xử lý khi nhận được tin nhắn từ kênh ID `777000`\n@client.on(events.NewMessage(chats=777000))  # Chỉ lắng nghe tin nhắn từ 777000\nasync def handler(event):\n    # In ra nội dung tin nhắn\n    message_text = event.text\n    print(f\"Tin nhắn từ {event.sender_id}: {message_text}\")",
-        "detail": "beestore.test copy",
-        "documentation": {}
-    },
-    {
-        "label": "api_hash",
-        "kind": 5,
-        "importPath": "beestore.test copy",
-        "description": "beestore.test copy",
-        "peekOfCode": "api_hash = '6cd1f6260d0050adf4af5f1d99dbde09'  # Thay thế bằng API Hash của bạn\n# Tạo Telegram client\nclient = TelegramClient('+84905227657', api_id, api_hash)\n# Hàm xử lý khi nhận được tin nhắn từ kênh ID `777000`\n@client.on(events.NewMessage(chats=777000))  # Chỉ lắng nghe tin nhắn từ 777000\nasync def handler(event):\n    # In ra nội dung tin nhắn\n    message_text = event.text\n    print(f\"Tin nhắn từ {event.sender_id}: {message_text}\")\n    # Tìm mã đăng nhập trong tin nhắn (nếu có)",
-        "detail": "beestore.test copy",
-        "documentation": {}
-    },
-    {
-        "label": "client",
-        "kind": 5,
-        "importPath": "beestore.test copy",
-        "description": "beestore.test copy",
-        "peekOfCode": "client = TelegramClient('+84905227657', api_id, api_hash)\n# Hàm xử lý khi nhận được tin nhắn từ kênh ID `777000`\n@client.on(events.NewMessage(chats=777000))  # Chỉ lắng nghe tin nhắn từ 777000\nasync def handler(event):\n    # In ra nội dung tin nhắn\n    message_text = event.text\n    print(f\"Tin nhắn từ {event.sender_id}: {message_text}\")\n    # Tìm mã đăng nhập trong tin nhắn (nếu có)\n    match = re.search(r'\\b\\d{5}\\b', message_text)\n    if match:",
-        "detail": "beestore.test copy",
-        "documentation": {}
-    },
-    {
-        "label": "api_id",
-        "kind": 5,
-        "importPath": "beestore.test",
-        "description": "beestore.test",
+        "importPath": "tele",
+        "description": "tele",
         "peekOfCode": "api_id = '21931615'  # Thay thế bằng API ID của bạn\napi_hash = '6cd1f6260d0050adf4af5f1d99dbde09'  # Thay thế bằng API Hash của bạn\n# Tạo Telegram client\nclient = TelegramClient('+84905227657.session', api_id, api_hash)\n# Hàm xử lý khi nhận được tin nhắn từ kênh ID `777000`\n@client.on(events.NewMessage(chats=777000))  # Chỉ lắng nghe tin nhắn từ 777000\nasync def handler(event):\n    # In ra nội dung tin nhắn\n    message_text = event.text\n    print(f\"Tin nhắn từ {event.sender_id}: {message_text}\")",
-        "detail": "beestore.test",
+        "detail": "tele",
         "documentation": {}
     },
     {
         "label": "api_hash",
         "kind": 5,
-        "importPath": "beestore.test",
-        "description": "beestore.test",
+        "importPath": "tele",
+        "description": "tele",
         "peekOfCode": "api_hash = '6cd1f6260d0050adf4af5f1d99dbde09'  # Thay thế bằng API Hash của bạn\n# Tạo Telegram client\nclient = TelegramClient('+84905227657.session', api_id, api_hash)\n# Hàm xử lý khi nhận được tin nhắn từ kênh ID `777000`\n@client.on(events.NewMessage(chats=777000))  # Chỉ lắng nghe tin nhắn từ 777000\nasync def handler(event):\n    # In ra nội dung tin nhắn\n    message_text = event.text\n    print(f\"Tin nhắn từ {event.sender_id}: {message_text}\")\n    # Tìm mã đăng nhập trong tin nhắn (nếu có)",
-        "detail": "beestore.test",
+        "detail": "tele",
         "documentation": {}
     },
     {
         "label": "client",
         "kind": 5,
-        "importPath": "beestore.test",
-        "description": "beestore.test",
+        "importPath": "tele",
+        "description": "tele",
         "peekOfCode": "client = TelegramClient('+84905227657.session', api_id, api_hash)\n# Hàm xử lý khi nhận được tin nhắn từ kênh ID `777000`\n@client.on(events.NewMessage(chats=777000))  # Chỉ lắng nghe tin nhắn từ 777000\nasync def handler(event):\n    # In ra nội dung tin nhắn\n    message_text = event.text\n    print(f\"Tin nhắn từ {event.sender_id}: {message_text}\")\n    # Tìm mã đăng nhập trong tin nhắn (nếu có)\n    match = re.search(r'\\b\\d{5}\\b', message_text)\n    if match:",
-        "detail": "beestore.test",
+        "detail": "tele",
         "documentation": {}
     },
     {
-        "label": "create_structure",
-        "kind": 2,
-        "importPath": "createFolder",
-        "description": "createFolder",
-        "peekOfCode": "def create_structure(base_path, structure):\n    for name, content in structure.items():\n        path = os.path.join(base_path, name)\n        if content is None:\n            # Tạo tệp tin\n            open(path, 'w').close()\n        else:\n            # Tạo thư mục và tiếp tục tạo cấu trúc bên trong\n            os.makedirs(path, exist_ok=True)\n            create_structure(path, content)",
-        "detail": "createFolder",
-        "documentation": {}
-    },
-    {
-        "label": "structure",
+        "label": "api_id",
         "kind": 5,
-        "importPath": "createFolder",
-        "description": "createFolder",
-        "peekOfCode": "structure = {\n    \"backend\": {\n        \"app.py\": None,\n        \"config.py\": None,\n        \"models.py\": None,\n        \"routes\": {\n            \"__init__.py\": None,\n            \"auth.py\": None,\n            \"product.py\": None,\n            \"cart.py\": None",
-        "detail": "createFolder",
+        "importPath": "test copy",
+        "description": "test copy",
+        "peekOfCode": "api_id = '21931615'  # Thay thế bằng API ID của bạn\napi_hash = '6cd1f6260d0050adf4af5f1d99dbde09'  # Thay thế bằng API Hash của bạn\n# Tạo Telegram client\nclient = TelegramClient('+84905227657', api_id, api_hash)\n# Hàm xử lý khi nhận được tin nhắn từ kênh ID `777000`\n@client.on(events.NewMessage(chats=777000))  # Chỉ lắng nghe tin nhắn từ 777000\nasync def handler(event):\n    # In ra nội dung tin nhắn\n    message_text = event.text\n    print(f\"Tin nhắn từ {event.sender_id}: {message_text}\")",
+        "detail": "test copy",
         "documentation": {}
     },
     {
-        "label": "res",
+        "label": "api_hash",
+        "kind": 5,
+        "importPath": "test copy",
+        "description": "test copy",
+        "peekOfCode": "api_hash = '6cd1f6260d0050adf4af5f1d99dbde09'  # Thay thế bằng API Hash của bạn\n# Tạo Telegram client\nclient = TelegramClient('+84905227657', api_id, api_hash)\n# Hàm xử lý khi nhận được tin nhắn từ kênh ID `777000`\n@client.on(events.NewMessage(chats=777000))  # Chỉ lắng nghe tin nhắn từ 777000\nasync def handler(event):\n    # In ra nội dung tin nhắn\n    message_text = event.text\n    print(f\"Tin nhắn từ {event.sender_id}: {message_text}\")\n    # Tìm mã đăng nhập trong tin nhắn (nếu có)",
+        "detail": "test copy",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "test copy",
+        "description": "test copy",
+        "peekOfCode": "client = TelegramClient('+84905227657', api_id, api_hash)\n# Hàm xử lý khi nhận được tin nhắn từ kênh ID `777000`\n@client.on(events.NewMessage(chats=777000))  # Chỉ lắng nghe tin nhắn từ 777000\nasync def handler(event):\n    # In ra nội dung tin nhắn\n    message_text = event.text\n    print(f\"Tin nhắn từ {event.sender_id}: {message_text}\")\n    # Tìm mã đăng nhập trong tin nhắn (nếu có)\n    match = re.search(r'\\b\\d{5}\\b', message_text)\n    if match:",
+        "detail": "test copy",
+        "documentation": {}
+    },
+    {
+        "label": "headers",
         "kind": 5,
         "importPath": "test",
         "description": "test",
-        "peekOfCode": "res = requests.get('http://127.0.0.1:5000/products')\nprint( 'res',res)\nprint( '====================')\nprint(res.json())",
+        "peekOfCode": "headers = {\n    'accept': 'application/json, text/plain, */*',\n    'accept-language': 'en-US,en;q=0.9',\n    'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9nYXRld2F5LmdvbGlrZS5uZXRcL2FwaVwvbG9naW4iLCJpYXQiOjE3MjY5MjE0ODAsImV4cCI6MTc1ODQ1NzQ4MCwibmJmIjoxNzI2OTIxNDgwLCJqdGkiOiJWQTVNS0xUOEExaTlNbVE5Iiwic3ViIjoyODE0ODgxLCJwcnYiOiJiOTEyNzk5NzhmMTFhYTdiYzU2NzA0ODdmZmYwMWUyMjgyNTNmZTQ4In0.H3V1VNWTM_QQuCcCKQ5YSFsB8_2hgj3cjvwDRp_8uv0',\n    'content-type': 'application/json;charset=utf-8',\n    'origin': 'https://app.golike.net',\n    'priority': 'u=1, i',\n    'referer': 'https://app.golike.net/',\n    'sec-ch-ua': '\"Chromium\";v=\"124\", \"Google Chrome\";v=\"124\", \"Not-A.Brand\";v=\"99\"',\n    'sec-ch-ua-mobile': '?0',",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "params",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "params = {\n    'account_id': '104363',\n}\nresponse = requests.get('https://gateway.golike.net/api/advertising/publishers/twitter/jobs', params=params, headers=headers)\nprint(response.json())",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "response",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "response = requests.get('https://gateway.golike.net/api/advertising/publishers/twitter/jobs', params=params, headers=headers)\nprint(response.json())",
         "detail": "test",
         "documentation": {}
     }

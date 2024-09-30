@@ -36,17 +36,36 @@
     text-align: left;
     font-size: 1.4rem;
     font-weight: 700;
-    &:hover{
-        color: rgba(0, 0, 0, 0.64);
+    &:hover {
+      color: rgba(0, 0, 0, 0.64);
     }
   }
 }
 
-.submit{
-    background-color: black;
-    color: white;
-    &:hover{
-        background-color: rgba(0, 0, 0, 0.83);
-    }
+.submit {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 2rem;
+  background-color: black;
+  padding: 1.5rem 8rem;
+  color: white;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.83);
+  }
+
+  &:focus{
+    animation: DowmUp  0.2s ease-in-out ;
+  }
+
+
 }
 
+@keyframes  DowmUp{
+  to {
+    transform: translateY(10px);
+  }
+
+  from{
+    transform: translateY(0);
+  }
+}

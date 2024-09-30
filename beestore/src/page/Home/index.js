@@ -1,8 +1,14 @@
-import Products from "~/components/Products/Products";
+import HomeProducts from "~/components/Products/ProductHome/ProductHome";
+import styles from './home.module.scss'
+import classNames from "classnames/bind";
+
+const cx = classNames.bind(styles)
+
 function Home() {
     return (
         <div>
-            <Products />
+            <h3 className={cx("title")}>Best Seller</h3>
+            <HomeProducts />
         </div>
     );
 }

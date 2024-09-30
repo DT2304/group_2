@@ -7,9 +7,9 @@ export const PostRegister = async (username, email, password) => {
         email,
         password
       });
-      return response.data;
+    
+      return response;
     } catch (error) {
-      console.error('Register error:', error);
       throw error;
     }
   };

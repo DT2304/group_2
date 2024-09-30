@@ -49,5 +49,26 @@
   justify-content: center;
   div:not(:last-child) {
     margin-right: 2rem;
-  } 
+  }
+}
+.user-popup {
+  position: absolute;
+  top: 70%;
+  right: 120px;
+  background-color: white;
+  border-radius: 5px;
+  // border: 1px solid #333;
+  padding: 5px;
+  z-index: 1000;
+  width: 15rem;
+  div {
+    // width: 110%;
+    padding: 5px 0;
+    cursor: pointer;
+    border-bottom: 1px solid #5353533d;
+    &:hover {
+      border-radius: 5px;
+      background-color: #d4cccc4f;
+    }
+  }
 }

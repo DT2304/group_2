@@ -1,101 +1,79 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Products.module.scss';
-import '../GlobalStyle/GlobalStyle.module.scss';
 import ProductItem from './ProductItem/ProductItem';
 import * as ProductsService from '~/services/ProductsService';
-import * as CartService from '~/services/CartService'; // Giả sử bạn có service này
-import CartPopup from '../Cart/Cart';
+import CartPopup from '../Cart/CartPopup';
+import Pagination from '../Pagination/Pagination';
 
 const cx = classNames.bind(styles);
 
-function Products() {
+function ProductsPage() {
     const [products, setProducts] = useState([]);
-    const [cart, setCart] = useState([]);
-    const [username, setUsername] = useState(''); // Thay thế bằng logic xác thực thực tế
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 12;
 
-    const getUser = () => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            const parsedUser = JSON.parse(storedUser); // parse JSON string thành object
-            return parsedUser?.username || ''; // Lấy username từ object user
-        }
-        return '';
+    const toggleCart = () => {
+        setIsCartOpen(!isCartOpen);
     };
 
     useEffect(() => {
-        const user = getUser();
-        setUsername(user);
         const fetchProducts = async () => {
-            const result = await ProductsService.getProducts();
-            setProducts(result || []);
-            console.log(result);
-            
-        };
-
-        const fetchCart = async () => {
-            const result = await CartService.getCart(username);
-            setCart(result.products || []);
+            try {
+                const result = await ProductsService.getProducts();
+                setProducts(result || []);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
         };
 
         fetchProducts();
-        if (user) {
-            fetchCart();
-        }
-    }, [username]);
 
-    const addToCart = async (product) => {
-        try {
-            await CartService.updateOrAddToCart(username, product.id, 1);
-            const updatedCart = await CartService.getCart(username);
-            setCart(updatedCart.products || []);
-        } catch (error) {
-            console.error('Error adding to cart:', error);
-        }
-    };
+    }, []);
 
-    const updateCartItemQuantity = async (productId, quantity) => {
-        try {
-            await CartService.updateOrAddToCart(username, productId, quantity);
-            const updatedCart = await CartService.getCart(username);
-            setCart(updatedCart.products || []);
-        } catch (error) {
-            console.error('Error updating cart:', error);
-        }
-    };
+    // Tính toán sản phẩm cho trang hiện tại
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const removeFromCart = async (productId) => {
-        try {
-            await CartService.removeFromCart(username, productId);
-            const updatedCart = await CartService.getCart(username);
-            setCart(updatedCart.products || []);
-        } catch (error) {
-            console.error('Error removing from cart:', error);
-        }
-    };
+
+
+    // Thay đổi trang
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
-        <div>
-            <div className={cx("products")}>
-                {products.length > 0 ? (
-                    products.map((product) => (
-                        <ProductItem
-                            key={product.id}
-                            data={product}
-                            addToCart={addToCart}
-                        />
-                    ))
-                ) : (
-                    <p>Loading products...</p>
-                )}
+        <div className={cx('products-page')}>
+            <div className={cx('filter')}>
+                Filter content goes here
             </div>
-            <CartPopup
-                items={cart}
-                updateQuantity={updateCartItemQuantity}
-                removeItem={removeFromCart}
-            />
+            <div className={cx('products-container')}>
+                <div className={cx("products-grid")}>
+                    {currentProducts.length > 0 ? (
+                        currentProducts.map((product) => (
+                            <ProductItem
+                                key={product.id}
+                                data={product}
+                            />
+                        ))
+                    ) : (
+                        <p>Loading products...</p>
+                    )}
+                </div>
+                <Pagination
+                    productsPerPage={productsPerPage}
+                    totalProducts={products.length}
+                    paginate={paginate}
+                    currentPage={currentPage}
+                />
+            </div>
+            {isCartOpen && (
+                <CartPopup
+                    onClose={toggleCart}
+                />
+            )}
         </div>
     );
 }
 
-export default Products;
+export default ProductsPage;

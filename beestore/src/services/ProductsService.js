@@ -3,11 +3,19 @@ import * as request from '~/utils/httpRequest';
 export const getProducts = async () => {
     try {
         const res = await request.get(`products`);
-        console.log(`res ${res} `)
-        console.log(res.data)
-        return res; // Đảm bảo rằng res.data chứa dữ liệu bạn mong đợi
+        return res; 
     } catch (error) {
-        console.error('Error fetching products:', error); // Xử lý lỗi
-        return []; // Hoặc trả về giá trị mặc định
+        console.error('Error fetching products:', error);
+        return [];
+    }
+};
+
+export const getProduct = async (product_id) => {
+    try {
+        const res = await request.get(`products/${product_id}`);
+        return res; 
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        return null; 
     }
 };
